@@ -1,21 +1,22 @@
 [app]
 title = Lamsty
 package.name = lamsty
-package.domain = com.lamsty.app
+package.domain = org.lamsty
+
 source.dir =.
-source.include_exts = py,png,jpg,kv,atlas,json
-version = 1.0
+source.include_exts = py,png,jpg,kv,atlas
+version = 0.1
+
 requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
 
-[buildozer]
-log_level = 2
-
-[app:android]
+android.permissions = INTERNET
 android.api = 33
 android.minapi = 21
-android.build_tools_version = 33.0.2
+android.ndk = 25b
 android.accept_sdk_license_agreement = True
-android.archs = arm64-v8a, armeabi-v7a
-p4a.bootstrap = sdl2
+
+[buildozer]
+log_level = 2
+warn_on_root = 1
