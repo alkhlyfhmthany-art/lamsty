@@ -1,37 +1,34 @@
 name: build
-on: [push]
-
+on:
+  push:
+    branches: [ main ]
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
       - name: Install dependencies
         run: |
+          pip install --upgrade pip
+          pip install buildozer cython
           sudo apt update
-          sudo apt install -y zip unzip libncurses5-dev libtinfo5
-
+          sudo apt install -y zip unzip openjdk-17-jdk
+      - name: Accept licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2" "platforms;android-33"
       - name: Build APK
         run: |
-          pip install --upgrade pip
-          pip install https://github.com/kivy/buildozer/archive/master.zip
-          pip install cython==0.29.36
           buildozer android debug
-        env:
-          ACCEPT_SDK_LICENSE_AGREEMENTS: "1"
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
