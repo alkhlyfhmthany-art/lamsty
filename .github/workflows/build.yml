@@ -1,7 +1,5 @@
 name: build
-
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -15,6 +13,9 @@ jobs:
           sudo apt install -y python3-pip zip unzip openjdk-17-jdk libffi-dev libssl-dev
           pip install --upgrade pip
           pip install buildozer cython==0.29.33
+      - run: |
+          yes | sdkmanager --licenses || true
+          yes | sdkmanager "build-tools;33.0.2" "platform-tools" || true
       - run: buildozer android debug
       - uses: actions/upload-artifact@v4
         with:
